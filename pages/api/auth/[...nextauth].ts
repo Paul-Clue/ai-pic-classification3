@@ -2,13 +2,14 @@ import NextAuth, { User } from "next-auth"
 // import { authOptions } from "@/app/api/auth/[...nextauth]"
 import CredentialsProvider from "next-auth/providers/credentials";
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from "@/app/firebase";
+import { auth } from "../../../src/components/firebase";
 // import { JWT } from "next-auth/jwt";
 
 export const authOptions = {
   // Configure one or more authentication providers
   pages: {
-    signIn: '/signin'
+    signIn: '/login',
+    signUp: '/signup'
   },
   providers: [
     CredentialsProvider({

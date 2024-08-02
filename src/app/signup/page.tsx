@@ -3,7 +3,7 @@ import * as React from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { auth } from '../firebase';
+import { auth } from '../../components/firebase';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,6 +17,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { signup } from '../../components/FbCredentials';
 
 function Copyright(props: any) {
   return (
@@ -168,7 +169,8 @@ export default function SignUp() {
               type='submit'
               fullWidth
               variant='contained'
-              disabled={(!email || !password || !passwordAgain) || (password !== passwordAgain)}
+                disabled={(!email || !password || !passwordAgain) || (password !== passwordAgain)}
+                // onClick={() => signup(router, email, password)}
                 onClick={() => signup()}
                 className="disabled:opacity-40 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               sx={{ mt: 3, mb: 2 }}

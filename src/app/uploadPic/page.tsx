@@ -14,7 +14,7 @@ import { Camera } from 'react-camera-pro';
 import Image from 'next/image';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import { auth } from '../firebase';
+import { auth } from '../../components/firebase';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
