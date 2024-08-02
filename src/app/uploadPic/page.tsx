@@ -46,10 +46,11 @@ function UploadPage() {
   const [faceMode, setFaceMode] = useState<'user' | 'environment'>(
     'environment'
   );
-
   const toggleFacingMode = () => {
-    camera.current?.switchCamera();
-    setFaceMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+    if (camera.current && 'switchCamera' in camera.current) {
+      (camera.current as any).switchCamera();
+      setFaceMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+    }
   };
 
   return (
@@ -173,8 +174,8 @@ function UploadPage() {
               <Button
                 variant='contained'
                 onClick={() => {
-                  if (camera.current) {
-                    const photo = camera.current.takePhoto();
+                  if (camera.current && 'takePhoto' in camera.current) {
+                    const photo = (camera.current as any).takePhoto();
                     setImage(photo);
                   }
                 }}
