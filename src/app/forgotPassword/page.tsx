@@ -3,8 +3,8 @@ import * as React from 'react';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { auth } from '../../../pages/api/auth/[...nextauth]';
-import { sendPasswordResetEmail } from 'firebase/auth';
+// import { auth } from '../../../pages/api/auth/[...nextauth]';
+// import { sendPasswordResetEmail } from 'firebase/auth';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -39,18 +39,43 @@ function Copyright(props: any) {
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
-  const resetEmail = () => {
-    sendPasswordResetEmail(auth, email);
+  // const resetEmail = () => {
+  //   sendPasswordResetEmail(auth, email);
+  // };
+
+  const resetEmail = async () => {
+    try {
+      const response = await fetch('/api/resetPassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('Password reset email sent. Please check your inbox.');
+      } else {
+        setMessage(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage('An error occurred. Please try again.');
+    }
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    resetEmail();
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get('email'),
+    //   password: data.get('password'),
+    // });
   };
 
   return (
@@ -124,12 +149,17 @@ export default function SignIn() {
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
-              onClick={() => resetEmail()}
+              // onClick={() => resetEmail()}
                 disabled={!email}
                 className="disabled:opacity-40 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             >
-              Send Forgot Password Email
+              Send Password Reset Email
             </Button>
+            {message && (
+              <Typography color={message.includes('Error') ? 'error' : 'primary'}>
+                {message}
+              </Typography>
+            )}
             {/* <Grid container>
               <Grid item xs>
                 <Link href='/forgotPassword' variant='body2'>
