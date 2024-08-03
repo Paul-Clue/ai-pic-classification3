@@ -29,6 +29,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
+// import { ai } from '../../../pages/api/openai';
+// import * as dotenv from 'dotenv';
+// dotenv.config();
+// import { OpenAI } from 'openai';
+// const openai = new OpenAI();
 
 // import { withRouter } from 'next/router';
 
@@ -43,13 +48,56 @@ function UploadPage() {
   const camera = useRef<typeof Camera>(null);
   const [image, setImage] = useState<string | null>(null);
   const [isCameraOn, setIsCameraOn] = useState(false);
+  const [imageDescription, setImageDescription] = useState<string | null>(null);
   const [faceMode, setFaceMode] = useState<'user' | 'environment'>(
     'environment'
   );
+
   const toggleFacingMode = () => {
     if (camera.current && 'switchCamera' in camera.current) {
       (camera.current as any).switchCamera();
       setFaceMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+    }
+  };
+
+  const takePhoto = () => {
+    if (camera.current && 'takePhoto' in camera.current) {
+      const photo = (camera.current as any).takePhoto();
+      // Convert the photo to base64
+      fetch(photo)
+        .then((res) => res.blob())
+        .then((blob) => {
+          console.log('blob', blob);
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64Image = reader.result as string;
+            setImage(base64Image);
+            sendImageToOpenAI(base64Image);
+          };
+          reader.readAsDataURL(blob);
+        });
+    }
+  };
+
+  const sendImageToOpenAI = async (base64Image: string) => {
+    try {
+      const response = await fetch('/api/openai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: base64Image }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get image description');
+      }
+
+      const data = await response.json();
+      setImageDescription(data.description);
+    } catch (error) {
+      console.error('Error getting image description:', error);
+      setImageDescription('Failed to get image description');
     }
   };
 
@@ -109,7 +157,12 @@ function UploadPage() {
               >
                 <Button
                   variant='outlined'
-                  sx={{ color: 'green', borderColor: 'green', marginBottom: '10px', marginTop: '10px' }}
+                  sx={{
+                    color: 'green',
+                    borderColor: 'green',
+                    marginBottom: '10px',
+                    marginTop: '10px',
+                  }}
                   onClick={toggleFacingMode}
                 >
                   <CameraswitchIcon sx={{ color: 'green' }} />
@@ -126,13 +179,43 @@ function UploadPage() {
                     canvas: 'Canvas error',
                   }}
                 />
-                <Box style={{ width: '100px', height: '100px' }}>
-                  <Image
+                <Box
+                  style={{
+                    width: '100%',
+                    height: '250px',
+                    // border: '1px solid red',
+                    marginTop: '2px',
+                    padding: '20px',
+                    overflow: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                  }}
+                >
+                  {/* <Image
                     src={image || ''}
                     width={150}
                     height={150}
                     alt='Taken photo'
-                  />
+                  /> */}
+                  {image && (
+                    <Box>
+                      <Image
+                        src={image}
+                        width={200}
+                        height={150}
+                        style={{ margin: 'auto' }}
+                        alt='Taken photo'
+                      />
+                      {/* <Box> */}
+                        {imageDescription && (
+                          <Typography variant='body1' sx={{ mt: 2 }}>
+                            Description: {imageDescription}
+                          </Typography>
+                        )}
+                      {/* </Box> */}
+                    </Box>
+                  )}
                 </Box>
                 {/* <Button
                   variant='contained'
@@ -173,12 +256,13 @@ function UploadPage() {
               </Button> */}
               <Button
                 variant='contained'
-                onClick={() => {
-                  if (camera.current && 'takePhoto' in camera.current) {
-                    const photo = (camera.current as any).takePhoto();
-                    setImage(photo);
-                  }
-                }}
+                // onClick={() => {
+                //   if (camera.current && 'takePhoto' in camera.current) {
+                //     const photo = (camera.current as any).takePhoto();
+                //     setImage(photo);
+                //   }
+                // }}
+                onClick={takePhoto}
               >
                 Take photo
               </Button>
