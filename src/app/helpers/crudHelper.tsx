@@ -1,7 +1,7 @@
 'use server'
 import {collection, addDoc, getDocs, deleteDoc, doc, query, onSnapshot} from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import {db} from '../../components/firebase';
+import {db} from '../../../pages/api/firebase';
 // import { useState } from 'react';
 
 // Get a reference to the storage service, which is used to create references in your storage bucket

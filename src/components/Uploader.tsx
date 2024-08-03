@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ref, uploadBytesResumable, getDownloadURL, StorageReference, UploadTask, getStorage } from 'firebase/storage';
-import { storage } from './firebase'; 
+import { storage } from '../../pages/api/firebase'; 
 // import { storage } from './firebase'; // Ensure this imports the correct initialized storage
 import Image from 'next/image';
 
