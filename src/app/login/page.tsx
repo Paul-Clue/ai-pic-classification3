@@ -60,7 +60,7 @@ export default function SignIn() {
     });
 
     if (result?.error) {
-      setErrorMessage("The username or password is incorrect.");
+      setErrorMessage("The email or password you entered is incorrect.");
     } else {
       // Redirect to another page on successful login
       router.push('/uploadPic'); // Change to your desired route
