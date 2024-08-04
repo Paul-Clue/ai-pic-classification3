@@ -40,6 +40,7 @@ export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordAgain, setPasswordAgain] = useState('');
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -53,6 +54,7 @@ export default function SignUp() {
 
       if (result?.error) {
         console.error('Signup failed:', result.error);
+        setError(true);
       } else {
         router.push('/login');
       }
@@ -85,6 +87,9 @@ export default function SignUp() {
           >
             Sign up
           </Typography>
+          { error && <Typography component='h2' variant='h5' sx={{ color: 'red', fontSize: '12px', textAlign: 'center' }}>
+            This email already exists. Create a new account with a valid email address or login.
+          </Typography>}
           <Box
             component='form'
             noValidate

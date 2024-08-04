@@ -7,6 +7,10 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './globals.css';
 import SessionProvider from '@/components/SessionProvider';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../pages/api/auth/[...nextauth]';
+import Typography from '@mui/material/Typography';
+
 // import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ['latin'] });
@@ -20,16 +24,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const session = await getServerSession(authOptions);
+  // console.log('session', session);
   return (
     <SessionProvider>
       <html lang='en'>
         <body className={inter.className}>
           <Navbar />
+          {/* {session ? <Typography sx={{ color: 'red', textAlign: 'center' }}>Hello</Typography> : null} */}
           {children}
         </body>
       </html>
