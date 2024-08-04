@@ -20,6 +20,7 @@ export const firebaseConfig = {
 };
 
 const app = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
+// console.log('app', app);
 
 export const auth = getAuth(app);
 export const authOptions = {
@@ -39,6 +40,7 @@ export const authOptions = {
         };
 
         if (isSignUp) {
+          console.log('SignUp', isSignUp);
           try {
             const userCredential = await createUserWithEmailAndPassword(
               auth,
@@ -54,6 +56,7 @@ export const authOptions = {
             return null;
           }
         } else {
+          console.log('SignIn', isSignUp);
           try {
             const userCredential = await signInWithEmailAndPassword(
               auth,
@@ -72,20 +75,20 @@ export const authOptions = {
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }: { token: JWT; user: User | undefined }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }: { session: any; token: JWT }) {
-      if (token) {
-        session.user.id = token.id;
-      }
-      return session;
-    },
-  },
+  // callbacks: {
+  //   async jwt({ token, user }: { token: JWT; user: User | undefined }) {
+  //     if (user) {
+  //       token.id = user.id;
+  //     }
+  //     return token;
+  //   },
+  //   async session({ session, token }: { session: any; token: JWT }) {
+  //     if (token) {
+  //       session.user.id = token.id;
+  //     }
+  //     return session;
+  //   },
+  // },
   secret: process.env.NEXTAUTH_SECRET,
 };
 
