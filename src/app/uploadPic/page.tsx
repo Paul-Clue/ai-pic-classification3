@@ -7,6 +7,7 @@ import { Camera } from 'react-camera-pro';
 import Image from 'next/image';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -27,6 +28,7 @@ function UploadPage() {
   const [faceMode, setFaceMode] = useState<'user' | 'environment'>(
     'environment'
   );
+  const [loading, setLoading] = useState(false);
 
   const toggleFacingMode = () => {
     if (camera.current && 'switchCamera' in camera.current) {
@@ -38,21 +40,24 @@ function UploadPage() {
   const takePhoto = () => {
     if (camera.current && 'takePhoto' in camera.current) {
       const photo = (camera.current as any).takePhoto();
+      setLoading(true);
       // Convert the photo to base64
       fetch(photo)
         .then((res) => res.blob())
         .then((blob) => {
-          console.log('blob', blob);
           const reader = new FileReader();
-          reader.onloadend = () => {
+          reader.onloadend = async () => {
             const base64Image = reader.result as string;
             setImage(base64Image);
-            sendImageToOpenAI(base64Image);
+            // sendImageToOpenAI(base64Image);
+            await sendImageToOpenAI(base64Image);
+            setLoading(false);
           };
           reader.readAsDataURL(blob);
         });
     }
   };
+  console.log('loading', loading);
 
   const sendImageToOpenAI = async (base64Image: string) => {
     try {
@@ -114,6 +119,18 @@ function UploadPage() {
                 >
                   <CameraswitchIcon sx={{ color: 'whitesmoke' }} />
                 </Button>
+                {loading && (
+                  <CircularProgress
+                    size={80}
+                    sx={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 1000,
+                    }}
+                  />
+                )}
                 <Camera
                   ref={camera}
                   aspectRatio={16 / 16}
@@ -184,6 +201,7 @@ function UploadPage() {
                 variant='contained'
                 style={{ width: '200px' }}
                 onClick={takePhoto}
+                disabled={loading}
               >
                 Take photo
               </Button>

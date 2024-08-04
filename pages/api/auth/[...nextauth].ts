@@ -20,7 +20,6 @@ export const firebaseConfig = {
 };
 
 const app = getApps.length > 0 ? getApp() : initializeApp(firebaseConfig);
-// console.log('app', app);
 
 export const auth = getAuth(app);
 export const authOptions = {
@@ -40,7 +39,6 @@ export const authOptions = {
         };
 
         if (isSignUp) {
-          console.log('SignUp', isSignUp);
           try {
             const userCredential = await createUserWithEmailAndPassword(
               auth,

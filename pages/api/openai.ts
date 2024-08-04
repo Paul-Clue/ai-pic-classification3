@@ -9,7 +9,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log('response');
   if (req.method === 'POST') {
     try {
       const { image } = req.body;
