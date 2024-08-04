@@ -1,9 +1,7 @@
 'use client';
 import * as React from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-// import { auth } from '../../components/firebase';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,7 +16,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { signIn } from 'next-auth/react';
-// import { signup } from '../../components/FbCredentials';
 
 function Copyright(props: any) {
   return (
@@ -44,26 +41,6 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [passwordAgain, setPasswordAgain] = useState('');
 
-  // const signup = async () => {
-  //   try {
-  //     await createUserWithEmailAndPassword(auth, email, password);
-  //     // Redirect to login page after successful signup
-  //     router.push('/login');
-  //   } catch (error) {
-  //     console.error("Error signing up:", error);
-  //     // Handle error (e.g., show error message to user)
-  //   }
-  // };
-
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -71,19 +48,16 @@ export default function SignUp() {
         redirect: false,
         email,
         password,
-        isSignUp: true, // This flag tells our auth provider it's a signup
+        isSignUp: true,
       });
 
       if (result?.error) {
         console.error('Signup failed:', result.error);
-        // Handle error (e.g., show error message to user)
       } else {
-        // Signup successful, redirect to login page
         router.push('/login');
       }
     } catch (error) {
       console.error('Error during signup:', error);
-      // Handle error
     }
   };
 
@@ -118,27 +92,6 @@ export default function SignUp() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete='given-name'
-                  name='firstName'
-                  required
-                  fullWidth
-                  id='firstName'
-                  label='First Name'
-                  autoFocus
-                />
-              </Grid> */}
-              {/* <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id='lastName'
-                  label='Last Name'
-                  name='lastName'
-                  autoComplete='family-name'
-                />
-              </Grid> */}
               <Grid item xs={12}>
                 <TextField
                   required
@@ -171,7 +124,7 @@ export default function SignUp() {
                   label='Password Again'
                   type='password'
                   id='passwordAgain'
-                  autoComplete="current-password"
+                  autoComplete='current-password'
                   onChange={(e) => setPasswordAgain(e.target.value)}
                 />
               </Grid>
@@ -193,10 +146,13 @@ export default function SignUp() {
               type='submit'
               fullWidth
               variant='contained'
-                disabled={(!email || !password || !passwordAgain) || (password !== passwordAgain)}
-                // onClick={() => signup(router, email, password)}
-                // onClick={() => signup()}
-                className="disabled:opacity-40 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              disabled={
+                !email ||
+                !password ||
+                !passwordAgain ||
+                password !== passwordAgain
+              }
+              className='disabled:opacity-40 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
