@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useRouter } from 'next/navigation';
 
 function Copyright(props: any) {
   return (
@@ -37,14 +38,33 @@ function Copyright(props: any) {
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const router = useRouter();
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    setErrorMessage('');
+
+    const result = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
     });
+
+    if (result?.error) {
+      setErrorMessage("The username or password is incorrect.");
+    } else {
+      // Redirect to another page on successful login
+      router.push('/uploadPic'); // Change to your desired route
+    }
   };
 
   return (
@@ -64,6 +84,11 @@ export default function SignIn() {
           <Avatar sx={{ m: 1, bgcolor: 'rgb(46, 118, 210)' }}>
             <LockOutlinedIcon />
           </Avatar>
+          {errorMessage && (
+            <Typography color='error' sx={{ mt: 2 }}>
+              {errorMessage}
+            </Typography>
+          )}
           <Typography
             component='h1'
             variant='h5'
@@ -110,21 +135,21 @@ export default function SignIn() {
               fullWidth
               variant='contained'
               sx={{ mt: 3, mb: 2 }}
-              onClick={() =>
-                signIn('credentials', {
-                  email,
-                  password,
-                  redirect: true,
-                  callbackUrl: '/',
-                }).then((result) => {
-                  if (result?.error) {
-                    console.error(result.error);
-                  } else {
-                    // Redirect manually after successful sign-in
-                    window.location.href = '/uploadPic';
-                  }
-                })
-              }
+              // onClick={() =>
+              //   signIn('credentials', {
+              //     email,
+              //     password,
+              //     redirect: true,
+              //     callbackUrl: '/',
+              //   }).then((result) => {
+              //     if (result?.error) {
+              //       console.error(result.error);
+              //     } else {
+              //       // Redirect manually after successful sign-in
+              //       window.location.href = '/uploadPic';
+              //     }
+              //   })
+              // }
               disabled={!email || !password}
               className='disabled:opacity-40 flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500'
             >

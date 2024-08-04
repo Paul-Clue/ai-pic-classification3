@@ -54,7 +54,6 @@ export const authOptions = {
             return null;
           }
         } else {
-          console.log('SignIn', isSignUp);
           try {
             const userCredential = await signInWithEmailAndPassword(
               auth,
