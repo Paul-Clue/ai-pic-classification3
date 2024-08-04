@@ -105,30 +105,34 @@ function UploadPage() {
     <ThemeProvider theme={createTheme()}>
       <Container
         component='main'
-        maxWidth='md'
-        sx={{
-          maxHeight: '100vh', // 90% of the viewport height
-          // overflow: 'auto', // Add scrollbars if content exceeds maxHeight
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          padding: '24px',
-          // overflowY: 'auto',
-          // border: '1px solid red',
-        }}
+        // maxWidth='md'
+        // sx={{
+        //   height: '100%',
+        //   width: '100%',
+        //   // overflow: 'auto', // Add scrollbars if content exceeds maxHeight
+        //   display: 'flex',
+        //   flexDirection: 'column',
+        //   alignItems: 'center',
+        //   justifyContent: 'center',
+        //   padding: '24px',
+        //   // overflowY: 'auto',
+        //   border: '1px solid red',
+        // }}
+        className='h-full w-full flex flex-col items-center
+         justify-center p-24'
       >
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         {/* <main className='flex min-h-screen flex-col items-center justify-between p-24'> */}
         <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            padding: '24px',
-            // border: '1px solid red',
-          }}
+          // sx={{
+          //   display: 'flex',
+          //   flexDirection: 'column',
+          //   alignItems: 'center',
+          //   justifyContent: 'flex-start',
+          //   padding: '24px',
+          //   border: '1px solid red',
+          // }}
+          className='h-lvh w-full flex flex-col items-center justify-center p-24'
         >
           {/* <h1>UploadPage</h1> */}
           {/* <form>
@@ -138,10 +142,13 @@ function UploadPage() {
           {/* <Uploader /> */}
           <Box
             sx={{
-              maxWidth: '500px',
+              // maxWidth: '500px',
               // aspectRatio: '4/5',
               marginBottom: '20px',
-              border: '1px solid whitesmoke',
+              border: '1px solid green',
+              borderRadius: '15px',
+              boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.75)',
+              backgroundColor: 'black',
             }}
           >
             {isCameraOn ? (
@@ -156,16 +163,16 @@ function UploadPage() {
                 }}
               >
                 <Button
-                  variant='outlined'
+                  variant='contained'
                   sx={{
                     color: 'green',
-                    borderColor: 'green',
+                    backgroundColor: 'green',
                     marginBottom: '10px',
                     marginTop: '10px',
                   }}
                   onClick={toggleFacingMode}
                 >
-                  <CameraswitchIcon sx={{ color: 'green' }} />
+                  <CameraswitchIcon sx={{ color: 'whitesmoke' }} />
                 </Button>
                 <Camera
                   ref={camera}
@@ -208,11 +215,11 @@ function UploadPage() {
                         alt='Taken photo'
                       />
                       {/* <Box> */}
-                        {imageDescription && (
-                          <Typography variant='body1' sx={{ mt: 2 }}>
-                            Description: {imageDescription}
-                          </Typography>
-                        )}
+                      {imageDescription && (
+                        <Typography variant='body1' sx={{ mt: 2 }}>
+                          Description: {imageDescription}
+                        </Typography>
+                      )}
                       {/* </Box> */}
                     </Box>
                   )}
@@ -227,7 +234,16 @@ function UploadPage() {
               </Box>
             ) : (
               <>
-                <Box className='camera-placeholder'>Camera is off</Box>
+                <Box
+                  className='camera-placeholder'
+                  style={{
+                    color: 'whitesmoke',
+                    width: '150px',
+                    textAlign: 'center',
+                  }}
+                >
+                  Camera is off
+                </Box>
                 {/* <Button
                   variant='contained'
                   onClick={() => setIsCameraOn(!isCameraOn)}
@@ -241,7 +257,7 @@ function UploadPage() {
           <Button
             variant='contained'
             onClick={() => setIsCameraOn(!isCameraOn)}
-            style={{ marginBottom: '10px' }}
+            style={{ marginBottom: '10px', width: '200px' }}
           >
             {isCameraOn ? 'Turn Camera Off' : 'Turn Camera On'}
           </Button>
@@ -262,6 +278,7 @@ function UploadPage() {
                 //     setImage(photo);
                 //   }
                 // }}
+                style={{ width: '200px' }}
                 onClick={takePhoto}
               >
                 Take photo

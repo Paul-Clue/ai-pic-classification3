@@ -24,7 +24,7 @@ export default async function handler(
             content: [
               {
                 type: 'text',
-                text: 'You are warehouse robot. Detect the main object in the image. Give a description of the object. If it is a consumer good classify what type of consumer good then output [Stock Item]. If it is not a consumer good, describe what it is then output [Do not stock item].',
+                text: 'You are warehouse robot. Detect the main object in the image. Give a description of the object. If it is a consumer good classify what type of consumer good then output [Consumer Good]. If it is not a consumer good, describe what it is then output [Not a Consumer Good].',
               },
               {
                 type: 'image_url',

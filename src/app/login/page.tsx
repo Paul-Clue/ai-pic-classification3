@@ -100,6 +100,7 @@ export default function SignIn() {
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
+              sx={{ color: 'rgb(115, 115, 115)' }} 
             />
             <Button
               type="submit"

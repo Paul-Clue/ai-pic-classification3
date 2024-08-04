@@ -46,12 +46,17 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    handleCloseUserMenu();
+    // handleCloseUserMenu();
     signOut();
   };
 
   return (
-    <AppBar position='static'>
+    <AppBar
+      position='static'
+      sx={{
+        boxShadow: '0px 6px 40px rgba(0, 0, 0, 0.5)',
+      }}
+    >
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <ImageSearchIcon
@@ -62,6 +67,9 @@ function Navbar() {
             noWrap
             component='a'
             href='/'
+            onClick={() => {
+              handleLogout();
+            }}
             sx={{
               mr: 40,
               display: { xs: 'none', md: 'flex' },
@@ -84,9 +92,30 @@ function Navbar() {
               onClick={handleOpenNavMenu}
               color='inherit'
             >
-              <MenuIcon />
+              {/* <MenuIcon /> */}
             </IconButton>
-            <Menu
+            <ImageSearchIcon
+              sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+            />
+            <Typography
+              variant='h5'
+              noWrap
+              component='a'
+              href='#app-bar-with-responsive-menu'
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.1rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              Picture ID
+            </Typography>
+            {/* <Menu
               id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -109,12 +138,12 @@ function Navbar() {
                   <Typography textAlign='center'>{page}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
-          <ImageSearchIcon
+          {/* <ImageSearchIcon
             sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
-          />
-          <Typography
+          /> */}
+          {/* <Typography
             variant='h5'
             noWrap
             component='a'
@@ -125,15 +154,15 @@ function Navbar() {
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
+              letterSpacing: '.1rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-            LOGO
-          </Typography>
+           Picture ID
+          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {/* {pages.map((page) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -143,9 +172,9 @@ function Navbar() {
                   {page}
                 </Link>
               </Button>
-            ))}
+            ))} */}
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ display: 'flex', flexGrow: 0 }}>
             {/* <Button component={Link} href='/login' sx={{ color: 'white', textDecoration: 'none' }}> Login</Button>
             <Button component={Link} href='/signup' sx={{ color: 'white', textDecoration: 'none' }}> Sign up</Button>
             <Tooltip title='Open settings'>
@@ -160,26 +189,31 @@ function Navbar() {
                   href='/login'
                   sx={{ color: 'white', textDecoration: 'none' }}
                 >
-                  {' '}
                   Login
                 </Button>
                 <Button
                   component={Link}
                   href='/signup'
-                  sx={{ color: 'white', textDecoration: 'none' }}
+                  sx={{ color: 'white', textDecoration: 'none', marginLeft: '-10px' }}
                 >
-                  {' '}
                   Sign up
                 </Button>
               </>
             ) : (
-              <Tooltip title='Open settings'>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
-                </IconButton>
-              </Tooltip>
+              // <Tooltip title='Open settings'>
+              //   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              //     <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+              //   </IconButton>
+              // </Tooltip>
+              <Button
+                // component={Link}
+                onClick={handleLogout}
+                sx={{ color: 'white', textDecoration: 'none' }}
+              >
+                Logout
+              </Button>
             )}
-            <Menu
+            {/* <Menu
               sx={{ mt: '45px' }}
               id='menu-appbar'
               anchorEl={anchorElUser}
@@ -205,7 +239,7 @@ function Navbar() {
                   <Typography textAlign='center'>{setting}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
         </Toolbar>
       </Container>
