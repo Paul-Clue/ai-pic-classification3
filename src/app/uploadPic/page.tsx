@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 import CameraswitchIcon from '@mui/icons-material/Cameraswitch';
 
 function UploadPage() {
@@ -23,7 +23,7 @@ function UploadPage() {
 
   const camera = useRef<typeof Camera>(null);
   const [image, setImage] = useState<string | null>(null);
-  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [isCameraOn, setIsCameraOn] = useState<boolean>(false);
   const [imageDescription, setImageDescription] = useState<string | null>(null);
   const [faceMode, setFaceMode] = useState<'user' | 'environment'>(
     'environment'
@@ -33,7 +33,7 @@ function UploadPage() {
   const toggleFacingMode = () => {
     if (camera.current && 'switchCamera' in camera.current) {
       (camera.current as any).switchCamera();
-      setFaceMode((prevMode) => (prevMode === 'user' ? 'environment' : 'user'));
+      setFaceMode((prevMode: string) => (prevMode === 'user' ? 'environment' : 'user'));
     }
   };
 
@@ -85,24 +85,28 @@ function UploadPage() {
     <ThemeProvider theme={createTheme()}>
       <Container
         component='main'
-        className='h-full w-full flex flex-col items-center
-         justify-center p-24'
+        className='border-2 border-green-500 h-full w-full flex flex-col items-center justify-center p-0'
       >
-        <Box className='h-lvh w-full flex flex-col items-center justify-center p-24'>
+        <Box className='border-2 border-green-500 w-full flex flex-col items-center justify-center'>
           <Box
             sx={{
               marginBottom: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
               border: '1px solid green',
               borderRadius: '15px',
               boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.75)',
               backgroundColor: 'black',
+              width: '100%',
             }}
           >
             {isCameraOn ? (
               <Box
                 style={{
                   display: 'flex',
-                  width: '300px',
+                  // width: '300px',
+                  width: '100%',
                   flexDirection: 'column',
                   alignItems: 'center',
                 }}
